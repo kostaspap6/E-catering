@@ -7,10 +7,9 @@ public class StandardMenu extends Menu
 	Order.TypeOfEvent typeOfEvent ;
 	float price ;
 	
-	public StandardMenu(Products[] Products, Owner Owner, Store Store, float Price)
+	public StandardMenu(Products[] Products, Owner Owner, Store Store, double[] Price)
 	{
 		super(Products, Price, Owner, Store) ;
-		this.price = Price ;
 	}
 	
 }

@@ -6,7 +6,7 @@ public class Order
 	
 	LocalDateTime datetimeOfOrder, dateOfEvent ;
 	int numberOfPersons ;
-	float price ;
+	double price ;
 	enum TypeOfEvent {Wedding, Baptism, CorporateEvent, Other} ;
 	TypeOfEvent typeOfEvent ;
 	boolean equipment ;

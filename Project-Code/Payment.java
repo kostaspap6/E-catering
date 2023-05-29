@@ -7,13 +7,20 @@ public class Payment
 	Wallet wallet ;
 	LocalDateTime paymentDate ;
 	Order order ;
-	Float amount ;
+	double amount ;
 	
-	public Payment(Wallet Wallet , LocalDateTime PaymentDate, Order Order, Float Amount )
+	public Payment(Wallet Wallet , LocalDateTime PaymentDate, Order Order, double Amount )
 	{
 		this.wallet = Wallet ;
 		this.paymentDate = PaymentDate ; 
 		this.order = Order ;
 		this.amount = Amount ; 
+	}
+	
+	public Payment(Wallet Wallet , LocalDateTime PaymentDate, Order Order )
+	{
+		this.wallet = Wallet ;
+		this.paymentDate = PaymentDate ; 
+		this.order = Order ;
 	}
 }

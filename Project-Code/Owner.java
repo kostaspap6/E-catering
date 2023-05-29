@@ -79,7 +79,7 @@ public class Owner extends User
 		Store.addMenu(Menu);
 	}
 	
-	public void createMenu(Store Store,Menu.Products[] Products,float Price)
+	public void createMenu(Store Store,Menu.Products[] Products,double[] Price)
 	{
 		Menu a  = new Menu(Products, Price, Store) ;
 		a.setOwner(Store.owner);

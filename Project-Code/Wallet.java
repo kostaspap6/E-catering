@@ -6,7 +6,7 @@ import java.util.Scanner ;
 
 public class Wallet 
 {
-	float amount ;
+	double amount ;
 	User user ;
 	Card card ;
 	

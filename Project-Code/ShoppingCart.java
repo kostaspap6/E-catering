@@ -5,7 +5,7 @@ public class ShoppingCart
 	int numberOfPersons;
 	Order.TypeOfEvent typeOfEvent ;
 	boolean equipment ;
-	float price ;
+	double price ;
 	Menu[] menu ;
 	
 	public ShoppingCart(int NumberOfPersons, Order.TypeOfEvent TypeOfEvent, boolean Equipment, float Price, Menu[] Menu)
@@ -88,15 +88,23 @@ public class ShoppingCart
 		}
 		else
 		{
+			double tot = 0 ;
 			for(int i = 0 ; i < menu.length ; i++)
 			{
-				this.price += menu[i].price ;
+				for(int j = 0 ; j < menu[i].pricePerProduct.length ; j++)
+				{
+					tot += menu[i].pricePerProduct[j] ;
+				}
 			}
-		}
-		
-		if(equipment)
-		{
-			this.price += 1000 ;
+			
+			if(equipment)
+			{
+				this.price = numberOfPersons * ( tot /4 + 1000 );
+			}
+			else
+			{
+				this.price = numberOfPersons * ( tot /4 );
+			}
 		}
 	}
 	

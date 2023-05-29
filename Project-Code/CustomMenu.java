@@ -8,10 +8,9 @@ public class CustomMenu extends Menu
 	Order.TypeOfEvent typeOfEvent ;
 	float price ;
 	
-	public CustomMenu(Products[] Products, Owner Owner, Store Store, float Price)
+	public CustomMenu(Products[] Products, Owner Owner, Store Store, double[] Price)
 	{
 		super(Products, Price, Owner, Store) ;
-		this.price = Price ;
 	}
 	
 }

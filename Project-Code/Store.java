@@ -244,5 +244,23 @@ public class Store
 		}
 	}
 	
-	
+	public void storeMessage()
+	{
+		float avgRating,sum ;
+		sum = 0 ;
+		if(rating == null)
+		{
+			System.out.printf("Name : %s\nAddress : %s\nOwner Name : %s\n",name,address,owner.name) ;
+		}
+		else
+		{
+			for(int i = 0 ; i < rating.length ; i++)
+			{
+				sum = sum + rating[i].rating ;
+			}
+			avgRating = sum / rating.length ;
+			System.out.printf("Name : %s\nAddress : %s\nOwner Name : %s\nAverage Rating : %.2f\n",name,address,owner.name,avgRating) ;
+		}
+		
+	}
 }

@@ -26,10 +26,10 @@ public class Customer extends User
 		this.state = User.State.Active ;
 	}
 	
-	public void createOrder(LocalDateTime DatetimeOfOrder, LocalDateTime DateOfEvent, int NumberOfPersons, Order.TypeOfEvent TypeOfEvent,boolean Equipment, Order.Status Status, Store Store,float Price)
+	public void createOrder(LocalDateTime DatetimeOfOrder, LocalDateTime DateOfEvent, int NumberOfPersons, Order.TypeOfEvent TypeOfEvent,boolean Equipment, Order.Status Status, Store Store)
 	{
 		Order a = new Order(DatetimeOfOrder, DateOfEvent, NumberOfPersons, TypeOfEvent,Equipment, Status, Store) ;
-		Payment b = new Payment(wallet,DatetimeOfOrder, a, Price) ;
+		Payment b = new Payment(wallet,DatetimeOfOrder, a) ;
 		a.addPayment(b) ;
 		addOrder(a) ;
 	}
@@ -212,4 +212,7 @@ public class Customer extends User
 		System.out.println();
 		
 	}
+	
+	
+	
 }
