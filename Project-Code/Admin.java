@@ -19,5 +19,13 @@ public class Admin extends User
 		this.state = User.State.Admin ;
 	}
 	
+	public void getAdminMenuMessage()
+	{
+		System.out.println() ;
+		System.out.println("1 : View Accounts") ;
+		System.out.println("2 : View Requests") ;
+		System.out.println("3 : Log Out") ;
+		System.out.println() ;
+	}
 	
 }

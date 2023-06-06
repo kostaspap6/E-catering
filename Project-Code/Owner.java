@@ -86,4 +86,14 @@ public class Owner extends User
 		addMenu(Store,a) ;
 		
 	}
+	
+	public void getOwnerMenuMessage()
+	{
+		System.out.println();
+		System.out.println("Press 1 : View Stores") ;
+		System.out.println("Press 2 : Create Store Page") ;
+		System.out.println("Press 3 : Log Out") ;
+		System.out.println();
+		
+	}
 }

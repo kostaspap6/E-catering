@@ -105,4 +105,49 @@ public class User
 		System.out.printf("Name : %s\nSurnmae: %s\nUsername : %s\nPassword : %s\nEmail : %s\nPhone Number : %s\nDate Of Birth : \n" ,name, surname, username, password,email, phoneNumber, dateOfBirth.toString())  ;
 		
 	}
+	
+	public void deleteRequest(Request Request)
+	{
+		if(request == null)
+		{
+			
+		}
+		else if(request.length == 1)
+		{
+			Request[] newReqs = {new Request()} ;
+			this.request = newReqs ;
+		}
+		else
+		{
+			int reqIndex = -1 ;
+			Request[] newReqs = new Request[request.length - 1] ;
+			for(int i = 0 ; i < request.length ; i++)
+			{
+				if(request[i].equals(Request))
+				{
+					reqIndex = i ;
+					break ;
+				}
+			}
+			
+			for(int i = 0 ; i < request.length ; i++)
+			{
+				if(i == reqIndex)
+				{
+					continue ;
+				}
+				else if(i > reqIndex)
+				{
+					newReqs[i - 1] = request[i] ;
+				}
+				else
+				{
+					newReqs[i] = request[i] ;
+				}
+			}
+			this.request = newReqs ;
+			
+		}
+		
+	}
 }

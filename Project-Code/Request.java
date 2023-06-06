@@ -22,6 +22,11 @@ public class Request
 		this.status = Status.Pending ;
 	}
 	
+	public Request()
+	{
+		
+	}
+
 	public void setAdmin(Admin Admin)
 	{
 		this.admin = Admin ;

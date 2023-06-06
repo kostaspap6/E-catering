@@ -1,7 +1,12 @@
 
 public class Menu 
 {
-	enum Products {A,B,C,D} ; //CHANGE
+	enum Products {
+		Starter1 ,  Starter2 ,  Starter3 ,  Starter4 ,  Starter5 ,  Starter6 ,  Starter7 ,  Starter8 ,  Starter9 ,  Starter10 ,
+		 mainDish1 ,  mainDish2 ,  mainDish3 ,  mainDish4 ,  mainDish5 ,  mainDish6 ,  mainDish7 ,  mainDish8 ,  mainDish9 ,  mainDish10 ,
+		 Dessert1 ,  Dessert2 ,  Dessert3 ,  Dessert4 ,  Dessert5 ,  Dessert6 ,  Dessert7 ,  Dessert8 ,  Dessert9 ,  Dessert10 ,
+		 Drink1 ,  Drink2 ,  Drink3 ,  Drink4 ,  Drink5 ,  Drink6 ,  Drink7 ,  Drink8 ,  Drink9 ,  Drink10 
+		} ; 
 	Products[] products ;
 	double[] pricePerProduct ;
 	//price per product, price per product* pl = menu 

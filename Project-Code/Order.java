@@ -63,6 +63,6 @@ public class Order
 		System.out.printf("Equipmet : %b\n",equipment);
 		System.out.printf("Order Status : %s\n",status);
 		System.out.printf("Store Name : %s, %s\n",store.name,store.address);
-		
+		System.out.printf("Price : %.2f\n",price);
 	}
 }

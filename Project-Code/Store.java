@@ -263,4 +263,43 @@ public class Store
 		}
 		
 	}
+	
+	public void deleteOrder(Order Order)
+	{
+		boolean point = false ;
+		Order[] a = new Order[order.length-1] ;
+		
+		if(order == null)
+		{
+			
+		}
+		else if(order.length == 1)
+		{
+			order = null ;
+		}
+		else
+		{
+			for(int i = 0 ; i < order.length ; i++)
+			{
+				if(order[i].equals(Order))
+				{
+					point = true ;
+				}
+				else
+				{
+					if(point)
+					{
+						a[i-1] = order[i] ;
+					}
+					else
+					{
+						a[i] = order[i] ;
+					}
+				}
+			}
+			
+			this.order = a ;
+		}
+		
+	}
 }
