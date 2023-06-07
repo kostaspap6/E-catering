@@ -360,7 +360,7 @@ public class Test
 				
 				input = new Scanner(System.in) ;
 				int option1 = input.nextInt() ;
-				if(option1 < stores.length && option1 > 0)
+				if(option1 <= stores.length && option1 > 0)
 				{
 					boolean mistake = false ;
 					stores[option1-1].storeMessage() ;
@@ -1310,44 +1310,149 @@ public class Test
 			else if(users[thisUserIndex].getClass().toString().equals("class Owner"))
 			{
 				//Owner LOGGED
-				int thisOwnerIndex = 0 ;
-				
-				for(int i = 0 ; i < owners.length ; i++)
+				if(users[thisUserIndex].state.equals(User.State.Admin))
 				{
-					if(users[thisUserIndex].username.equals(owners[i].username))
+					System.out.println("1 : Admin Account") ;
+					System.out.println("2 : Customer Account") ;
+					input = new Scanner(System.in) ;
+					int option = input.nextInt() ;
+					if(option == 1)
 					{
-						thisOwnerIndex = i ;
-						break ;
+						int thisAdminIndex = 0 ;
+						
+						for(int i = 0 ; i < admins.length ; i++)
+						{
+							if(users[thisUserIndex].username.equals(admins[i].username))
+							{
+								thisAdminIndex = i ;
+								break ;
+							}
+						}
+						
+						do
+						{
+							admins[thisAdminIndex].getAdminMenuMessage();
+						}while(adminPostLog(thisUserIndex, thisAdminIndex) != -1) ;
+					}
+					else if(option == 2)
+					{
+						
+						int thisOwnerIndex = 0 ;
+						
+						for(int i = 0 ; i < owners.length ; i++)
+						{
+							if(users[thisUserIndex].username.equals(owners[i].username))
+							{
+								thisOwnerIndex = i ;
+								break ;
+							}
+						}
+						
+						do
+						{
+							owners[thisOwnerIndex].getOwnerMenuMessage() ;
+							
+						}while(ownerPostLog(thisUserIndex, thisOwnerIndex) != -1) ;
+					}
+					else
+					{
+						
 					}
 				}
-				
-				do
+				else
 				{
-					owners[thisOwnerIndex].getOwnerMenuMessage() ;
+					int thisOwnerIndex = 0 ;
 					
-				}while(ownerPostLog(thisUserIndex, thisOwnerIndex) != -1) ;
+					for(int i = 0 ; i < owners.length ; i++)
+					{
+						if(users[thisUserIndex].username.equals(owners[i].username))
+						{
+							thisOwnerIndex = i ;
+							break ;
+						}
+					}
+					
+					do
+					{
+						owners[thisOwnerIndex].getOwnerMenuMessage() ;
+						
+					}while(ownerPostLog(thisUserIndex, thisOwnerIndex) != -1) ;
+				}
 				
 			}
 			else if(users[thisUserIndex].getClass().toString().equals("class Customer"))
 			{
 				//Customer LOGGED
-				int thisCustomerIndex = 0 ;
-				
-				for(int i = 0 ; i < customers.length ; i++)
+				if(users[thisUserIndex].state.equals(User.State.Admin))
 				{
-					if(users[thisUserIndex].username.equals(customers[i].username))
+					System.out.println("1 : Admin Account") ;
+					System.out.println("2 : Customer Account") ;
+					input = new Scanner(System.in) ;
+					int option = input.nextInt() ;
+					if(option == 1)
 					{
-						thisCustomerIndex = i ;
-						break ;
+						int thisAdminIndex = 0 ;
+						
+						for(int i = 0 ; i < admins.length ; i++)
+						{
+							if(users[thisUserIndex].username.equals(admins[i].username))
+							{
+								thisAdminIndex = i ;
+								break ;
+							}
+						}
+						
+						do
+						{
+							admins[thisAdminIndex].getAdminMenuMessage();
+						}while(adminPostLog(thisUserIndex, thisAdminIndex) != -1) ;
+					}
+					else if(option == 2)
+					{
+						int thisCustomerIndex = 0 ;
+						
+						for(int i = 0 ; i < customers.length ; i++)
+						{
+							if(users[thisUserIndex].username.equals(customers[i].username))
+							{
+								thisCustomerIndex = i ;
+								break ;
+							}
+						}
+						
+						
+						do
+						{
+							customers[thisCustomerIndex].getCustomerMenuMessage() ;
+							
+						}while(customerPostLog(thisUserIndex,thisCustomerIndex) != -1) ;
+					}
+					else
+					{
+						
 					}
 				}
-				
-				
-				do
+				else
 				{
-					customers[thisCustomerIndex].getCustomerMenuMessage() ;
+					int thisCustomerIndex = 0 ;
 					
-				}while(customerPostLog(thisUserIndex,thisCustomerIndex) != -1) ;
+					for(int i = 0 ; i < customers.length ; i++)
+					{
+						if(users[thisUserIndex].username.equals(customers[i].username))
+						{
+							thisCustomerIndex = i ;
+							break ;
+						}
+					}
+					
+					
+					do
+					{
+						customers[thisCustomerIndex].getCustomerMenuMessage() ;
+						
+					}while(customerPostLog(thisUserIndex,thisCustomerIndex) != -1) ;
+				}
+				
 			}
 			else
 			{
@@ -1885,7 +1990,7 @@ public class Test
 					input = new Scanner(System.in) ;
 					int option3 = input.nextInt() ;
 					
-					if(owners[0].store[thisStoreIndex].order == null)
+					if(owners[thisOwnerIndex].store[thisStoreIndex].order == null)
 					{
 						System.out.println("There are no available Orders") ;
 					}
@@ -2521,7 +2626,7 @@ public class Test
 							}
 							else
 							{
-								Menu.Products[] newP = new Menu.Products[Products.length + 1] ;
+								Menu.Products[] newP = new Menu.Products[Products2.length + 1] ;
 								double[] newD = new double[PRICE.length + 1] ;
 								for(int i = 0 ; i < newP.length ; i++)
 								{
@@ -2580,7 +2685,7 @@ public class Test
 							}
 							else
 							{
-								Menu.Products[] newP = new Menu.Products[Products.length + 1] ;
+								Menu.Products[] newP = new Menu.Products[Products2.length + 1] ;
 								double[] newD = new double[PRICE.length + 1] ;
 								for(int i = 0 ; i < newP.length ; i++)
 								{
@@ -2638,7 +2743,7 @@ public class Test
 							}
 							else
 							{
-								Menu.Products[] newP = new Menu.Products[Products.length + 1] ;
+								Menu.Products[] newP = new Menu.Products[Products2.length + 1] ;
 								double[] newD = new double[PRICE.length + 1] ;
 								for(int i = 0 ; i < newP.length ; i++)
 								{
@@ -3480,7 +3585,7 @@ public class Test
 		addManyData() ;
 		
 		createUser("Stelios", "Tzakas", "Username", "Password", "mail", 2102752883, LocalDateTime.now(),'C') ;
-		users[users.length - 1].wallet = new Wallet( 500, users[users.length - 1] );
+		users[users.length - 1].wallet = new Wallet( 500000, users[users.length - 1] );
 		customers[customers.length - 1].wallet = new Wallet( 500000, users[users.length - 1] );
 		Card a = new Card(Card.CardType.credit, 25454, 999, "Name", LocalDateTime.now(), 1000000) ;
 		users[users.length - 1].addCard(a);
