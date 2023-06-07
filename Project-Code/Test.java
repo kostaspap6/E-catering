@@ -1,6 +1,7 @@
 
 import java.time.LocalDateTime;
 import java.util.Scanner ;
+import java.util.Random;
 
 public class Test 
 {
@@ -450,101 +451,93 @@ public class Test
 									System.out.println("Enter product number to add to your custom menu");
 									System.out.println("Enter 5000 when your are finished");
 									int counter = 0 ;
+									
 									for(int i = 0 ; i < stores[option1-1].menu.length ; i++)
 									{
-										if(stores[option1-1].menu[i].products == null )
+										for(int j = 0 ; j < stores[option1-1].menu[i].products.length ; j++)
 										{
-											
+											System.out.printf("%d : %s\n", counter,stores[option1-1].menu[i].products[j]) ;
+											counter++ ;
+										}
+									}
+									
+									Menu.Products[] Products = new Menu.Products[counter];
+									double[] PricePerProduct = new double[counter];
+									counter = 0 ;
+									for(int k = 0 ; k < stores[option1-1].menu.length ; k++)
+									{
+										for(int j = 0 ; j < stores[option1-1].menu[k].products.length ; j++)
+										{
+											Products[counter] = stores[option1-1].menu[k].products[j] ;
+											PricePerProduct[counter] = stores[option1-1].menu[k].pricePerProduct[j] ;
+											counter++ ;
+										}
+									}
+									int OPTIONARA1 ;
+									Menu myMenu = new Menu(stores[option1-1]) ;
+									boolean breakPoint = false ;
+									
+									do
+									{
+										OPTIONARA1 = 0 ;
+										input = new Scanner(System.in) ;
+										OPTIONARA1 = input.nextInt() ;
+										
+										if(OPTIONARA1 >= 0 && OPTIONARA1 < counter)
+										{
+											myMenu.addProducts(Products[OPTIONARA1], PricePerProduct[OPTIONARA1]);
+										}
+										else if(OPTIONARA1 == 5000)
+										{
+											break ;
 										}
 										else
 										{
-											for(int j = 0 ; j < stores[option1-1].menu[i].products.length ; j++)
+											System.out.println("Wrong input") ;
+											breakPoint = true ;
+											break ;
+										}
+										
+									}while(OPTIONARA1 != 5000) ;
+									
+									if(breakPoint)
+									{
+										
+									}
+									else
+									{
+										customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.addMenu(myMenu);
+										stores[option1-1].order[stores[option1-1].order.length-1].shoppingCart.addMenu(myMenu);
+										
+										customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.calculatePrice();
+										System.out.println("Total Price for your order : " + customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.price) ;
+										System.out.printf("Press 1 in order to procceed with payment \n") ;
+										customers[0].order[customers[0].order.length-1].calculatePrice();
+										stores[option1-1].order[stores[option1-1].order.length-1].shoppingCart.calculatePrice();
+										input= new Scanner(System.in) ;
+										int option4 = input.nextInt() ;
+										if(option4 == 1)
+										{
+											if(customers[thisCustomerIndex].wallet.amount > customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.price)
 											{
-												System.out.printf("%d : %s\n", counter,stores[option1-1].menu[i].products[j]) ;
-												counter++ ;
-											}
-											
-											Menu.Products[] Products = new Menu.Products[counter];
-											double[] PricePerProduct = new double[counter];
-											counter = 0 ;
-											for(int k = 0 ; k < stores[option1-1].menu.length ; k++)
-											{
-												for(int j = 0 ; j < stores[option1-1].menu[k].products.length ; j++)
-												{
-													Products[counter] = stores[option1-1].menu[k].products[j] ;
-													PricePerProduct[counter] = stores[option1-1].menu[k].pricePerProduct[j] ;
-													counter++ ;
-												}
-											}
-											int OPTIONARA1 ;
-											Menu myMenu = new Menu(stores[option1-1]) ;
-											boolean breakPoint = false ;
-											
-											do
-											{
-												OPTIONARA1 = 0 ;
-												input = new Scanner(System.in) ;
-												OPTIONARA1 = input.nextInt() ;
+												Payment a = new Payment(customers[thisCustomerIndex].wallet , LocalDateTime.now(), customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1], customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.price ) ;
+												customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].addPayment(a);
+												System.out.println("Old wallet amount " + customers[thisCustomerIndex].wallet.amount);
+												customers[thisCustomerIndex].addnewPayment(a);
+												customers[thisCustomerIndex].wallet.amount = customers[thisCustomerIndex].wallet.amount - customers[thisCustomerIndex].payment[customers[thisCustomerIndex].payment.length - 1].amount ;
 												
-												if(OPTIONARA1 >= 0 && OPTIONARA1 < counter)
-												{
-													myMenu.addProducts(Products[OPTIONARA1], PricePerProduct[OPTIONARA1]);
-												}
-												else if(OPTIONARA1 == 5000)
-												{
-													break ;
-												}
-												else
-												{
-													System.out.println("Wrong input") ;
-													breakPoint = true ;
-													break ;
-												}
-												
-											}while(OPTIONARA1 != 5000) ;
-											
-											if(breakPoint)
-											{
-												
+												System.out.println("New wallet amount " + customers[thisCustomerIndex].wallet.amount);
 											}
 											else
 											{
-												customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.addMenu(myMenu);
-												stores[option1-1].order[stores[option1-1].order.length-1].shoppingCart.addMenu(myMenu);
-												
-												customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.calculatePrice();
-												System.out.println("Total Price for your order : " + customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.price) ;
-												System.out.printf("Press 1 in order to procceed with payment \n") ;
-												customers[0].order[customers[0].order.length-1].calculatePrice();
-												stores[option1-1].order[stores[option1-1].order.length-1].shoppingCart.calculatePrice();
-												input= new Scanner(System.in) ;
-												int option4 = input.nextInt() ;
-												if(option4 == 1)
-												{
-													if(customers[thisCustomerIndex].wallet.amount > customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.price)
-													{
-														Payment a = new Payment(customers[thisCustomerIndex].wallet , LocalDateTime.now(), customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1], customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].shoppingCart.price ) ;
-														customers[thisCustomerIndex].order[customers[thisCustomerIndex].order.length-1].addPayment(a);
-														System.out.println("Old wallet amount " + customers[thisCustomerIndex].wallet.amount);
-														customers[thisCustomerIndex].addnewPayment(a);
-														customers[thisCustomerIndex].wallet.amount = customers[thisCustomerIndex].wallet.amount - customers[thisCustomerIndex].payment[customers[thisCustomerIndex].payment.length - 1].amount ;
-														
-														System.out.println("New wallet amount " + customers[thisCustomerIndex].wallet.amount);
-													}
-													else
-													{
-														System.out.println("Insufficient founds") ;
-													}
-												}
-												else
-												{
-													System.out.println("Wrong input") ;
-												}
+												System.out.println("Insufficient founds") ;
 											}
 										}
-										
+										else
+										{
+											System.out.println("Wrong input") ;
+										}
 									}
-									
 									
 								}
 								else if(OPTIONARA == 1)
@@ -558,7 +551,7 @@ public class Test
 									}
 									input= new Scanner(System.in) ;
 									int option3 = input.nextInt() ;
-									if(option3 <= 0 && option3 > stores[option1-1].menu.length )
+									if(option3 <= 0 && option3 >= stores[option1-1].menu.length )
 									{
 										System.out.println("Wrong input") ;
 									}
@@ -699,6 +692,7 @@ public class Test
 					switch(option1)
 					{
 					case 1:
+						boolean exist = true ;
 						for(int i = 0 ; i < customers[thisCustomerIndex].order.length ; i++)
 						{
 							if(customers[thisCustomerIndex].order[i].status.equals(Order.Status.Completed))
@@ -708,55 +702,64 @@ public class Test
 								System.out.printf("Type Of Event : %s\n" ,customers[thisCustomerIndex].order[i].typeOfEvent) ;
 								
 								System.out.println() ;
+								exist = false ;
 							}
 						}
 						
-						System.out.printf("Choose an order : ") ;
-						input = new Scanner(System.in) ;
-						option2 = input.nextInt() ;
-						if(option2 <= 0 && option2-1> customers[thisCustomerIndex].order.length)
+						if(exist)
 						{
-							System.out.println("Wrong input") ;
+							System.out.println("There are not any Completed Orders") ;
 						}
 						else
 						{
-							customers[thisCustomerIndex].order[option2-1].message();
-							System.out.printf("1 : Rate this Store\n") ;
-							System.out.printf("2 : Send Feed Back to this Store\n") ;
+							System.out.printf("Choose an order : ") ;
 							input = new Scanner(System.in) ;
-							int option3 = input.nextInt() ;
-							if(option3 == 1)
+							option2 = input.nextInt() ;
+							if(option2 <= 0 && option2-1> customers[thisCustomerIndex].order.length)
 							{
-								int rate ;
-								System.out.println("Rating scale 1 to 5 (1 : Very Bad , 5 : Very Good) : ") ;
-								input = new Scanner(System.in) ;
-								rate = input.nextInt() ;
-								Rating a = new Rating(customers[thisCustomerIndex].order[option2-1].store,customers[thisCustomerIndex],LocalDateTime.now(),rate);
-								customers[thisCustomerIndex].addRating(customers[thisCustomerIndex].order[option2-1].store, a);
-								customers[thisCustomerIndex].order[option2-1].store.addRating(a);
-								
-								
-							}
-							else if(option3 == 2)
-							{
-								String feedBackText ;
-								System.out.println("The Text you would like to post on your feedback") ;
-								input = new Scanner(System.in) ;
-								feedBackText = input.nextLine() ;
-								FeedBack a = new FeedBack(customers[thisCustomerIndex].order[option2-1].store,customers[thisCustomerIndex],LocalDateTime.now(),feedBackText);
-								customers[thisCustomerIndex].addFeedBack(customers[thisCustomerIndex].order[option2-1].store, a);
-								customers[thisCustomerIndex].order[option2-1].store.addFeedBack(a);
-								
-								
-								
+								System.out.println("Wrong input") ;
 							}
 							else
 							{
-								System.out.println("Wrong input") ;
+								customers[thisCustomerIndex].order[option2-1].message();
+								System.out.printf("1 : Rate this Store\n") ;
+								System.out.printf("2 : Send Feed Back to this Store\n") ;
+								input = new Scanner(System.in) ;
+								int option3 = input.nextInt() ;
+								if(option3 == 1)
+								{
+									int rate ;
+									System.out.println("Rating scale 1 to 5 (1 : Very Bad , 5 : Very Good) : ") ;
+									input = new Scanner(System.in) ;
+									rate = input.nextInt() ;
+									Rating a = new Rating(customers[thisCustomerIndex].order[option2-1].store,customers[thisCustomerIndex],LocalDateTime.now(),rate);
+									customers[thisCustomerIndex].addRating(customers[thisCustomerIndex].order[option2-1].store, a);
+									customers[thisCustomerIndex].order[option2-1].store.addRating(a);
+									
+									
+								}
+								else if(option3 == 2)
+								{
+									String feedBackText ;
+									System.out.println("The Text you would like to post on your feedback") ;
+									input = new Scanner(System.in) ;
+									feedBackText = input.nextLine() ;
+									FeedBack a = new FeedBack(customers[thisCustomerIndex].order[option2-1].store,customers[thisCustomerIndex],LocalDateTime.now(),feedBackText);
+									customers[thisCustomerIndex].addFeedBack(customers[thisCustomerIndex].order[option2-1].store, a);
+									customers[thisCustomerIndex].order[option2-1].store.addFeedBack(a);
+									
+									
+									
+								}
+								else
+								{
+									System.out.println("Wrong input") ;
+								}
 							}
 						}
 						break;
 					case 2:
+						boolean exist1 = true ;
 						for(int i = 0 ; i < customers[thisCustomerIndex].order.length ; i++)
 						{
 							if(customers[thisCustomerIndex].order[i].status.equals(Order.Status.Ongoing))
@@ -765,22 +768,33 @@ public class Test
 								System.out.printf("Number Of Persons : %d\n" ,customers[thisCustomerIndex].order[i].numberOfPersons);
 								System.out.printf("Type Of Event : %s\n" ,customers[thisCustomerIndex].order[i].typeOfEvent) ;
 								System.out.println() ;
+								exist1 = false ;
 							}
 							
 						}
-						System.out.printf("Choose an order : ") ;
-						input = new Scanner(System.in) ;
-						option2 = input.nextInt() ;
-						if(option2 <= 0 && option2-1> customers[thisCustomerIndex].order.length)
+						
+						if(exist1)
 						{
-							System.out.println("Wrong input") ;
+							System.out.println("There are not any Ongoing Orders") ;
 						}
 						else
 						{
-							customers[thisCustomerIndex].order[option2-1].message();
+							System.out.printf("Choose an order : ") ;
+							input = new Scanner(System.in) ;
+							option2 = input.nextInt() ;
+							if(option2 <= 0 && option2-1> customers[thisCustomerIndex].order.length)
+							{
+								System.out.println("Wrong input") ;
+							}
+							else
+							{
+								customers[thisCustomerIndex].order[option2-1].message();
+							}
+							
 						}
 						break;
 					case 3:
+						boolean exist2 = true ;
 						for(int i = 0 ; i < customers[thisCustomerIndex].order.length ; i++)
 						{
 							if(customers[thisCustomerIndex].order[i].status.equals(Order.Status.Pending))
@@ -789,19 +803,29 @@ public class Test
 								System.out.printf("Number Of Persons : %d\n" ,customers[thisCustomerIndex].order[i].numberOfPersons);
 								System.out.printf("Type Of Event : %s\n" ,customers[thisCustomerIndex].order[i].typeOfEvent) ;
 								System.out.println() ;
+								exist2 = false ;
 							}
 						}
-						System.out.printf("Choose an order : ") ;
-						input = new Scanner(System.in) ;
-						option2 = input.nextInt() ;
-						if(option2 <= 0 && option2-1> customers[thisCustomerIndex].order.length)
+						
+						if(exist2)
 						{
-							System.out.println("Wrong input") ;
+							System.out.println("There are not any Pending Orders") ;
 						}
 						else
 						{
-							customers[thisCustomerIndex].order[option2-1].message();
+							System.out.printf("Choose an order : ") ;
+							input = new Scanner(System.in) ;
+							option2 = input.nextInt() ;
+							if(option2 <= 0 && option2-1> customers[thisCustomerIndex].order.length)
+							{
+								System.out.println("Wrong input") ;
+							}
+							else
+							{
+								customers[thisCustomerIndex].order[option2-1].message();
+							}
 						}
+						
 						break;
 					}
 				}
@@ -1067,7 +1091,7 @@ public class Test
 		}
 		else
 		{
-			Owner[] a = new Owner[customers.length + 1] ;
+			Owner[] a = new Owner[owners.length + 1] ;
 			for(int i = 0 ; i < owners.length ; i++)
 			{
 				a[i] = owners[i] ;
@@ -1082,6 +1106,7 @@ public class Test
 		if(users == null)
 		{
 			users = new User[1] ;
+			
 			
 			if(C == 'A')
 			{
@@ -1352,23 +1377,52 @@ public class Test
 	public static void addData()
 	{
 		//USER,WALLET,CARD CREATION
-		createUser("Stelios", "Tzakas", "Username", "Password", "mail", 2102752783, LocalDateTime.now(),'C') ;
+		createUser("Stelios", "Tzakas", "Username", "Password", "mail", 2102752883, LocalDateTime.now(),'C') ;
 		users[0].wallet = new Wallet( 500, users[0] );
 		customers[0].wallet = new Wallet( 5000, users[0] );
 		Card a = new Card(Card.CardType.credit, 25454, 999, "Name", LocalDateTime.now(), 20000) ;
 		users[0].addCard(a);
 		customers[0].addCard(a);
 		
-		
-		
-		createUser("Antonis", "Mpatzo", "Uname", "Pword", "mail", 2102752783, LocalDateTime.now(),'O') ;
+		createUser("Antonis", "Mpatzo", "Uname", "Pword", "mail", 2102703283, LocalDateTime.now(),'O') ;
 		users[1].wallet = new Wallet( 500, users[1] );
 		owners[0].wallet = new Wallet( 500, users[1] );
+		Card b1 = new Card(Card.CardType.credit, 25454, 999, "Name", LocalDateTime.now(), 23600) ;
+		users[1].addCard(b1);
+		owners[0].addCard(b1);
 		
-		createUser("Antonis", "Mpatzo", "Admin", "Pass", "mail", 2102752783, LocalDateTime.now(),'A') ;
+		createUser("Antonis", "Mpatzo", "Admin", "Pass", "mail", 2105743783, LocalDateTime.now(),'A') ;
+		
+		createUser("Dimitrios", "Nikolaou", "UsernameNik", "Password", "mail", 2104561233, LocalDateTime.now(),'C') ;
+		users[3].wallet = new Wallet( 1000, users[3] );
+		customers[1].wallet = new Wallet( 1000, users[3] );
+		Card a1 = new Card(Card.CardType.credit, 25454, 999, "Name", LocalDateTime.now(), 5000) ;
+		users[3].addCard(a1);
+		customers[1].addCard(a1);
+		
+		createUser("Giannis", "Kanoulas", "GiannisKan", "PKan", "mail", 2102785283, LocalDateTime.now(),'O') ;
+		users[4].wallet = new Wallet( 2000, users[4] );
+		owners[1].wallet = new Wallet( 2000, users[4] );
+		Card b2 = new Card(Card.CardType.credit, 12345, 753, "Name", LocalDateTime.now(), 45000) ;
+		users[4].addCard(b2);
+		owners[1].addCard(b2);
+		
+		createUser("Nikos", "Xatzis", "Xatzis", "PeterPan", "mail", 2135795283, LocalDateTime.now(),'O') ;
+		users[5].wallet = new Wallet( 4500, users[5] );
+		owners[2].wallet = new Wallet( 4500, users[5] );
+		Card b3 = new Card(Card.CardType.credit, 25114, 951, "Name", LocalDateTime.now(), 200) ;
+		users[5].addCard(b3);
+		owners[2].addCard(b3);
+		
+		createUser("Loukas", "Karas", "UsernameKar", "Password", "mail", 2132561233, LocalDateTime.now(),'C') ;
+		users[6].wallet = new Wallet( 1000, users[6] );
+		customers[2].wallet = new Wallet( 1000, users[6] );
+		Card a2 = new Card(Card.CardType.credit, 25454, 999, "Name", LocalDateTime.now(), 5000) ;
+		users[6].addCard(a2);
+		customers[2].addCard(a2);
 		
 		//STORE CREATION
-		stores = new Store[3] ;
+		stores = new Store[5] ;
 		stores[0] = new Store("Katastima", "Mezonos 3", owners[0]) ;
 		owners[0].addStore(stores[0]);
 		
@@ -1378,35 +1432,60 @@ public class Test
 		stores[2] = new Store("Katastima2", "Mezonos 67", owners[0]) ;
 		owners[0].addStore(stores[2]);
 		
+		stores[3] = new Store("Melandre", "Korinthou 3", owners[1]) ;
+		owners[1].addStore(stores[3]);
+		
+		stores[4] = new Store("ZZ ", "Foka 356", owners[2]) ;
+		owners[2].addStore(stores[4]);
+		
 		//ORDER CREATION
 		Order A = new Order(LocalDateTime.now(), LocalDateTime.now(), 10, Order.TypeOfEvent.Baptism, true, Order.Status.Pending, stores[0]);
 		customers[0].addOrder(A);
 		stores[0].addOrder(customers[0].order[0]);
+		
 		Order B = new Order(LocalDateTime.now(), LocalDateTime.now(), 20, Order.TypeOfEvent.Wedding, false, Order.Status.Ongoing, stores[1]);
 		customers[0].addOrder(B);
 		stores[1].addOrder(customers[0].order[1]);
+		
 		Order C = new Order(LocalDateTime.now(), LocalDateTime.now(), 50, Order.TypeOfEvent.Wedding, true, Order.Status.Completed, stores[1]);
 		customers[0].addOrder(C);
 		stores[1].addOrder(customers[0].order[2]);
+		
 		Order D = new Order(LocalDateTime.now(), LocalDateTime.now(), 50, Order.TypeOfEvent.Wedding, true, Order.Status.Pending, stores[1]);
 		customers[0].addOrder(D);
 		stores[1].addOrder(customers[0].order[3]);
 		
+		Order D2 = new Order(LocalDateTime.now(), LocalDateTime.now(), 33, Order.TypeOfEvent.CorporateEvent, true, Order.Status.Pending, stores[3]);
+		customers[1].addOrder(D2);
+		stores[3].addOrder(customers[1].order[0]);
+		
+		Order D3 = new Order(LocalDateTime.now(), LocalDateTime.now(), 10, Order.TypeOfEvent.Baptism, false, Order.Status.Completed, stores[4]);
+		customers[2].addOrder(D3);
+		stores[4].addOrder(customers[2].order[0]);
+		
 		//PRODUCTS CREATION
 		Menu.Products[] Prod = {Menu.Products.Starter1 , Menu.Products.Starter2 , Menu.Products.Starter3 , Menu.Products.Starter4 ,
-				Menu.Products.Starter5 ,  Menu.Products.Starter6 ,  Menu.Products.Starter7 ,  Menu.Products.Starter8 ,  Menu.Products.Starter9 ,  Menu.Products.Starter10 ,
-				Menu.Products.mainDish1 ,  Menu.Products.mainDish2 ,  Menu.Products.mainDish3 ,  Menu.Products.mainDish4 ,  Menu.Products.mainDish5 ,  Menu.Products.mainDish6 ,  Menu.Products.mainDish7 ,  Menu.Products.mainDish8 ,  Menu.Products.mainDish9 ,  Menu.Products.mainDish10 ,
+		Menu.Products.Starter5 ,  Menu.Products.Starter6 ,  Menu.Products.Starter7 ,  Menu.Products.Starter8 ,  Menu.Products.Starter9 ,  Menu.Products.Starter10 ,
+		Menu.Products.mainDish1 ,  Menu.Products.mainDish2 ,  Menu.Products.mainDish3 ,  Menu.Products.mainDish4 ,  Menu.Products.mainDish5 ,  Menu.Products.mainDish6 ,  Menu.Products.mainDish7 ,  Menu.Products.mainDish8 ,  Menu.Products.mainDish9 ,  Menu.Products.mainDish10 ,
 		 Menu.Products.Dessert1 ,  Menu.Products.Dessert2 ,  Menu.Products.Dessert3 ,  Menu.Products.Dessert4 ,  Menu.Products.Dessert5 ,  Menu.Products.Dessert6 ,  Menu.Products.Dessert7 ,  Menu.Products.Dessert8 ,  Menu.Products.Dessert9 ,  Menu.Products.Dessert10 ,
 		 Menu.Products.Drink1 ,  Menu.Products.Drink2 ,  Menu.Products.Drink3 ,  Menu.Products.Drink4 ,  Menu.Products.Drink5 , Menu.Products. Drink6 ,  Menu.Products.Drink7 ,  Menu.Products.Drink8 ,  Menu.Products.Drink9 ,  Menu.Products.Drink10 } ;
 		double[] PRICE = {6.0, 7.5, 9.0, 8.5, 6.5, 10.0, 7.0, 9.5, 8.0, 6.0,12.0, 11.5, 10.0, 13.5, 14.0, 9.5, 10.5, 12.5, 13.0, 11.0,9.0, 8.5, 10.0, 9.5, 8.0, 11.0, 10.5, 9.5, 10.0, 8.5,7.0, 8.0, 7.5, 6.5, 9.0, 6.0, 7.5, 8.5, 7.0, 6.5} ;
 		
 		
 		Menu.Products[] Prod1 = {Menu.Products.Starter1 , Menu.Products.Starter2 , Menu.Products.Starter3 , Menu.Products.Starter4 ,
-				Menu.Products.Starter5 ,  Menu.Products.Starter6 ,  Menu.Products.Starter7 ,  Menu.Products.Starter8 ,  Menu.Products.Starter9 ,  Menu.Products.Starter10 ,
-				Menu.Products.mainDish1 ,  Menu.Products.mainDish2 ,  Menu.Products.mainDish3 ,  Menu.Products.mainDish4 ,  Menu.Products.mainDish5 ,  Menu.Products.mainDish6 ,  Menu.Products.mainDish7 ,  Menu.Products.mainDish8 ,  Menu.Products.mainDish9 ,  Menu.Products.mainDish10 ,
+		Menu.Products.Starter5 ,  Menu.Products.Starter6 ,  Menu.Products.Starter7 ,  Menu.Products.Starter8 ,  Menu.Products.Starter9 ,  Menu.Products.Starter10 ,
+		Menu.Products.mainDish1 ,  Menu.Products.mainDish2 ,  Menu.Products.mainDish3 ,  Menu.Products.mainDish4 ,  Menu.Products.mainDish5 ,  Menu.Products.mainDish6 ,  Menu.Products.mainDish7 ,  Menu.Products.mainDish8 ,  Menu.Products.mainDish9 ,  Menu.Products.mainDish10 ,
 		 Menu.Products.Dessert1 ,  Menu.Products.Dessert2 ,  Menu.Products.Dessert3 ,  Menu.Products.Dessert4 ,  Menu.Products.Dessert5 ,  Menu.Products.Dessert6 ,  Menu.Products.Dessert7 ,  Menu.Products.Dessert8 ,  Menu.Products.Dessert9 ,  Menu.Products.Dessert10 ,
 		 Menu.Products.Drink1 ,  Menu.Products.Drink2 ,  Menu.Products.Drink3 ,  Menu.Products.Drink4 ,  Menu.Products.Drink5 , Menu.Products. Drink6 ,  Menu.Products.Drink7 ,  Menu.Products.Drink8 ,  Menu.Products.Drink9 ,  Menu.Products.Drink10 } ;
 		double[] PRICE1 = {10.0, 7.5, 9.0, 8.5, 6.5, 10.0, 7.0, 9.5, 8.0, 6.0,12.0, 11.5, 10.0, 13.5, 14.0, 9.5, 10.5, 12.5, 13.0, 11.0,9.0, 8.5, 10.0, 9.5, 8.0, 11.0, 10.5, 9.5, 10.0, 8.5,7.0, 8.0, 7.5, 6.5, 9.0, 6.0, 7.5, 8.5, 7.0, 6.5} ;
+		
+		Menu.Products[] Prod2 = {  Menu.Products.Starter9 ,  Menu.Products.mainDish3 ,Menu.Products.Dessert5, Menu.Products.Drink10 } ;
+		double[] PRICE2 = { 6.0, 9.5, 8.0, 6.5} ;
+		
+		Menu.Products[] Prod3 = {Menu.Products.Starter1 , Menu.Products.Starter2 , Menu.Products.Starter3, Menu.Products.mainDish1 ,
+		Menu.Products.mainDish2, Menu.Products.Dessert1 ,  Menu.Products.Dessert2 ,  Menu.Products.Dessert3,
+		Menu.Products.Drink1 ,  Menu.Products.Drink2 ,  Menu.Products.Drink3} ;
+		double[] PRICE3 = {10.0, 7.5, 9.0, 8.5, 6.5, 10.0, 7.0, 9.5, 8.0, 6.0,12.0} ;
 		
 		//MENU CREATION
 		Menu Me = new Menu(Prod, PRICE , stores[1].owner , stores[1]) ;
@@ -1414,28 +1493,59 @@ public class Test
 		Menu Me1 = new Menu(Prod1, PRICE1 , stores[1].owner , stores[1]) ;
 		stores[1].addMenu(Me1);
 		
+		Menu Me2 = new Menu(Prod2, PRICE2 , stores[3].owner , stores[3]) ;
+		stores[3].addMenu(Me2);
+		
+		Menu Me3 = new Menu(Prod3, PRICE3 , stores[4].owner , stores[4]) ;
+		stores[4].addMenu(Me3);
+		
 		//RATING CREATION
 		Rating S = new Rating(customers[0].order[0].store,customers[0],LocalDateTime.now(), 5);
 		customers[0].addRating(customers[0].order[0].store, S);
 		customers[0].order[0].store.addRating(S);
+		
 		Rating S1 = new Rating(customers[0].order[3].store,customers[0],LocalDateTime.now(), 2);
 		customers[0].addRating(customers[0].order[3].store, S1);
 		customers[0].order[3].store.addRating(S1);
 		
+		Rating S2 = new Rating(customers[1].order[0].store,customers[1],LocalDateTime.now(), 4);
+		customers[1].addRating(customers[1].order[0].store, S2);
+		customers[1].order[0].store.addRating(S2);
+		
+		Rating S3 = new Rating(customers[2].order[0].store,customers[2],LocalDateTime.now(), 1);
+		customers[2].addRating(customers[1].order[0].store, S3);
+		customers[2].order[0].store.addRating(S3);
 		
 		//FeedBack CREATION
 		FeedBack F = new FeedBack(customers[0].order[0].store,customers[0],LocalDateTime.now(),"Feed TEXT");
 		customers[0].addFeedBack(customers[0].order[0].store, F);
 		customers[0].order[0].store.addFeedBack(F);
+		
 		FeedBack F1 = new FeedBack(customers[0].order[0].store,customers[0],LocalDateTime.now(),"Feed TEXT");
 		customers[0].addFeedBack(customers[0].order[3].store, F1);
 		customers[0].order[3].store.addFeedBack(F1);
+		
+		FeedBack F2 = new FeedBack(customers[1].order[0].store,customers[1],LocalDateTime.now(),"Feed TEXT");
+		customers[1].addFeedBack(customers[1].order[0].store, F2);
+		customers[1].order[0].store.addFeedBack(F2);
+		
+		FeedBack F3 = new FeedBack(customers[2].order[0].store,customers[2],LocalDateTime.now(),"Feed TEXT");
+		customers[2].addFeedBack(customers[2].order[0].store, F3);
+		customers[2].order[0].store.addFeedBack(F3);
 		
 		
 		//PAYMENT CREATION
 		Payment Z = new Payment(customers[0].wallet , LocalDateTime.now(), customers[0].order[0], customers[0].order[0].shoppingCart.price ) ;
 		customers[0].order[0].addPayment(Z);
 		customers[0].addnewPayment(Z);
+		
+		Payment Z1 = new Payment(customers[1].wallet , LocalDateTime.now(), customers[1].order[0], customers[1].order[0].shoppingCart.price ) ;
+		customers[1].order[0].addPayment(Z1);
+		customers[1].addnewPayment(Z1);
+		
+		Payment Z2 = new Payment(customers[2].wallet , LocalDateTime.now(), customers[2].order[0], customers[2].order[0].shoppingCart.price ) ;
+		customers[2].order[0].addPayment(Z2);
+		customers[2].addnewPayment(Z2);
 		
 		
 		//REQUEST CREATION 
@@ -1486,13 +1596,117 @@ public class Test
 	public static void addManyData()
 	{
 		//USER CARD WALLET
+		String[] All = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+				"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z" } ;
+		char[] Type = {'C', 'A', 'O','U'} ;
+		Order.TypeOfEvent[] X = {Order.TypeOfEvent.Baptism , Order.TypeOfEvent.Wedding , Order.TypeOfEvent.CorporateEvent , Order.TypeOfEvent.Other} ;
+		Order.Status[] X1 = {Order.Status.Completed , Order.Status.Ongoing , Order.Status.Pending} ; 
+		Menu.Products[] Prod = {Menu.Products.Starter1 , Menu.Products.Starter2 , Menu.Products.Starter3 , Menu.Products.Starter4 ,
+		Menu.Products.Starter5 ,  Menu.Products.Starter6 ,  Menu.Products.Starter7 ,  Menu.Products.Starter8 ,  Menu.Products.Starter9 ,  Menu.Products.Starter10 ,
+		Menu.Products.mainDish1 ,  Menu.Products.mainDish2 ,  Menu.Products.mainDish3 ,  Menu.Products.mainDish4 ,  Menu.Products.mainDish5 ,  Menu.Products.mainDish6 ,  Menu.Products.mainDish7 ,  Menu.Products.mainDish8 ,  Menu.Products.mainDish9 ,  Menu.Products.mainDish10 ,
+		Menu.Products.Dessert1 ,  Menu.Products.Dessert2 ,  Menu.Products.Dessert3 ,  Menu.Products.Dessert4 ,  Menu.Products.Dessert5 ,  Menu.Products.Dessert6 ,  Menu.Products.Dessert7 ,  Menu.Products.Dessert8 ,  Menu.Products.Dessert9 ,  Menu.Products.Dessert10 ,
+		Menu.Products.Drink1 ,  Menu.Products.Drink2 ,  Menu.Products.Drink3 ,  Menu.Products.Drink4 ,  Menu.Products.Drink5 , Menu.Products. Drink6 ,  Menu.Products.Drink7 ,  Menu.Products.Drink8 ,  Menu.Products.Drink9 ,  Menu.Products.Drink10 } ;
+		double[] PRICE = {6.0, 7.5, 9.0, 8.5, 6.5, 10.0, 7.0, 9.5, 8.0, 6.0,12.0, 11.5, 10.0, 13.5, 14.0, 9.5, 10.5, 12.5, 13.0, 11.0,9.0, 8.5, 10.0, 9.5, 8.0, 11.0, 10.5, 9.5, 10.0, 8.5,7.0, 8.0, 7.5, 6.5, 9.0, 6.0, 7.5, 8.5, 7.0, 6.5} ;
+		char[] TypeOfMenu = {'E','S','L'} ;
+		Random random1 = new Random() , random2 = new Random() , random3 = new Random() , random4 = new Random() , random5 = new Random();
+		
 		for(int i = 0 ; i < 100 ; i++)
 		{
-			char[] Type = {'C', 'A', 'O','U'} ;
-			createUser("Stelios", "Tzakas", "Username"+ (char) i, "Password", "mail", i, LocalDateTime.now(),Type[i % 4]) ;
+			String a = All[random1.nextInt(All.length)] + All[random2.nextInt(All.length)] + All[random3.nextInt(All.length)] + All[random4.nextInt(All.length)] ;
+			String b = All[random1.nextInt(All.length)] + All[random2.nextInt(All.length)] + All[random3.nextInt(All.length)] + All[random4.nextInt(All.length)] ;
+			createUser(a, b, "Username"+ a, "Password"+ b, "mail", i, LocalDateTime.now(),Type[i % 4]) ;
 			users[i].wallet = new Wallet( i, users[i] );
-			Card a = new Card(Card.CardType.credit, 25454, 999, "Name", LocalDateTime.now(), 1000 + i) ;
-			users[i].addCard(a);
+			Card card = new Card(Card.CardType.credit, 25454, 999, "Name", LocalDateTime.now(), random1.nextFloat()) ;
+			users[i].addCard(card);
+			
+			if(Type[i % 4] == 'C')
+			{
+				customers[customers.length - 1].addCard(card);
+			}
+			else if(Type[i % 4] == 'O')
+			{
+				owners[owners.length - 1].addCard(card);
+			}
+			else
+			{
+				
+			}
+		}
+		
+		//STORE
+		stores = new Store[50] ;
+		for(int i = 0 ; i < stores.length ; i++)
+		{
+			String a = All[random1.nextInt(All.length)] + All[random2.nextInt(All.length)] + All[random3.nextInt(All.length)] + All[random4.nextInt(All.length)] ;
+			String b = All[random1.nextInt(All.length)] + All[random2.nextInt(All.length)] + All[random3.nextInt(All.length)] + All[random4.nextInt(All.length)] ;
+			int c = random5.nextInt(owners.length) ;
+			stores[i] = new Store(a, b, owners[c]) ;
+			owners[c].addStore(stores[i]);
+		}
+		
+		//ORDER
+		for(int i = 0 ; i < 1000 ; i++)
+		{
+			int c = random5.nextInt(1000) ;
+			int c1 = random5.nextInt(50) ;
+			int c2 = random5.nextInt(customers.length) ;
+			Order A = new Order(LocalDateTime.now(), LocalDateTime.now(), c, X[i % 4], true, X1[i % 3], stores[c1]);
+			customers[c2].addOrder(A);
+			stores[c1].addOrder(customers[c2].order[customers[c2].order.length - 1]);
+		}
+		
+		//Prod,Price,Menu
+		for(int i = 0 ; i < 100 ; i++)
+		{
+			int c1 = random1.nextInt(Prod.length) ;
+			int c2 = random2.nextInt(Prod.length) ;
+			int c3 = random3.nextInt(Prod.length) ;
+			int c4 = random4.nextInt(Prod.length) ;
+			int c5 = random5.nextInt(stores.length) ;
+			Menu.Products[] Prodcuts = { Prod[c1] , Prod[c2] , Prod[c3] , Prod[c4]} ;
+			double[] Price = { PRICE[c1] , PRICE[c2] , PRICE[c3] , PRICE[c4]} ;
+			if(TypeOfMenu[i % 3] == 'E')
+			{
+				EcoMenu Me = new EcoMenu(Prodcuts, stores[c5].owner , stores[c5],Price ) ;
+				stores[c5].addMenu(Me);
+			}
+			else if(TypeOfMenu[i % 3] == 'S')
+			{
+				StandardMenu Me = new StandardMenu(Prodcuts, stores[c5].owner , stores[c5],Price ) ;
+				stores[c5].addMenu(Me);
+			}
+			else
+			{
+				LuxuryMenu Me = new LuxuryMenu(Prodcuts, stores[c5].owner , stores[c5],Price ) ;
+				stores[c5].addMenu(Me);
+			}
+			
+		}
+		
+		//RATING, FEEDBACK
+		for(int i = 0 ; i < 100 ; i++)
+		{
+			int c1 = random1.nextInt(customers.length) ;
+			int c2 = random2.nextInt(customers[c1].order.length) ;
+			int c3 = 1 + random3.nextInt(5) ;
+			String a = All[random1.nextInt(All.length)] + All[random2.nextInt(All.length)] + All[random3.nextInt(All.length)] + All[random4.nextInt(All.length)] ;
+			String b = All[random1.nextInt(All.length)] + All[random2.nextInt(All.length)] + All[random3.nextInt(All.length)] + All[random4.nextInt(All.length)] ;
+			Rating S = new Rating(customers[c1].order[c2].store,customers[c1],LocalDateTime.now(), c3);
+			customers[c1].addRating(customers[c1].order[c2].store, S);
+			customers[c1].order[c2].store.addRating(S);
+			FeedBack F = new FeedBack(customers[c1].order[c2].store,customers[c1],LocalDateTime.now(),a + " " +b);
+			customers[c1].addFeedBack(customers[c1].order[c2].store, F);
+			customers[c1].order[c2].store.addFeedBack(F);
+		}
+		
+		//PAYMENT
+		for(int i = 0 ; i < 100 ; i++)
+		{
+			int c1 = random1.nextInt(customers.length) ;
+			int c2 = random2.nextInt(customers[c1].order.length) ;
+			Payment Z = new Payment(customers[c1].wallet , LocalDateTime.now(), customers[c1].order[c2], customers[c1].order[c2].shoppingCart.price ) ;
+			customers[c1].order[0].addPayment(Z);
+			customers[c1].addnewPayment(Z);
 		}
 	}
 
@@ -2544,7 +2758,7 @@ public class Test
 		
 		for(int i = 0 ; i < owners.length ; i++)
 		{
-			if(owners[i].equals(User))
+			if(owners[i].username.equals(User.username))
 			{
 				userTypeIndex = i ;
 				owner = true ;
@@ -2554,7 +2768,7 @@ public class Test
 		
 		for(int i = 0 ; i < customers.length ; i++)
 		{
-			if(customers[i].equals(User))
+			if(customers[i].username.equals(User.username))
 			{
 				userTypeIndex = i ;
 				customer = true ;
@@ -2564,7 +2778,7 @@ public class Test
 		
 		for(int i = 0 ; i < admins.length ; i++)
 		{
-			if(admins[i].equals(User))
+			if(admins[i].username.equals(User.username))
 			{
 				userTypeIndex = i ;
 				admin = true ;
@@ -3262,8 +3476,24 @@ public class Test
 	public static void main(String[] args)
 	{		
 		
-		addData() ;
-		//addManyData() ;
+		//addData() ;
+		addManyData() ;
+		
+		createUser("Stelios", "Tzakas", "Username", "Password", "mail", 2102752883, LocalDateTime.now(),'C') ;
+		users[users.length - 1].wallet = new Wallet( 500, users[users.length - 1] );
+		customers[customers.length - 1].wallet = new Wallet( 500000, users[users.length - 1] );
+		Card a = new Card(Card.CardType.credit, 25454, 999, "Name", LocalDateTime.now(), 1000000) ;
+		users[users.length - 1].addCard(a);
+		customers[customers.length - 1].addCard(a);
+		
+		createUser("Antonis", "Mpatzo", "Uname", "Pword", "mail", 2102703283, LocalDateTime.now(),'O') ;
+		users[users.length - 1].wallet = new Wallet( 500, users[users.length - 1] );
+		owners[owners.length - 1].wallet = new Wallet( 500, users[users.length - 1] );
+		Card b1 = new Card(Card.CardType.credit, 25454, 999, "Name", LocalDateTime.now(), 23600) ;
+		users[users.length - 1].addCard(b1);
+		owners[owners.length - 1].addCard(b1);
+		
+		createUser("Antonis", "Mpatzo", "Admin", "Pass", "mail", 2102752783, LocalDateTime.now(),'A') ;
 		do
 		{
 			preLogForm() ;
